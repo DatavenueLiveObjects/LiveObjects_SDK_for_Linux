@@ -19,7 +19,7 @@
 #define __liveobjects_iotsoftbox_api_H__
 
 #ifndef __liveobjects_dev_params_H_
-#error  "Parameter not defined, include"
+#error  "Parameter not defined, which means liveobjects_dev_params.h file not included"
 #endif
 
 /* LiveObjects Library interface*/
