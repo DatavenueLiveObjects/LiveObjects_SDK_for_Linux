@@ -207,7 +207,7 @@ int main_cb_rsc_data(const LiveObjectsD_Resource_t *rsc_ptr, uint32_t offset) {
 	if (rsc_ptr->rsc_uref == RSC_IDX_FIRMWARE) {
 		if (offset > (sizeof(appv_rsc_firmware) - 1)) {
 			printf(
-					"*** rsc_data: rsc[%d]='%s' offset=%u > %u - OUT OF ARRAY\r\n",
+					"*** rsc_data: rsc[%d]='%s' offset=%u > %lu - OUT OF ARRAY\r\n",
 					rsc_ptr->rsc_uref, rsc_ptr->rsc_name, offset,
 					sizeof(appv_rsc_firmware) - 1);
 			return -1;
@@ -218,7 +218,7 @@ int main_cb_rsc_data(const LiveObjectsD_Resource_t *rsc_ptr, uint32_t offset) {
 		if (ret > 0) {
 			if ((offset + ret) > (sizeof(appv_rsc_firmware) - 1)) {
 				printf("*** rsc_data: rsc[%d]='%s' offset=%u - read=%d => %u > "
-						"%u - OUT OF ARRAY\r\n", rsc_ptr->rsc_uref,
+						"%lu - OUT OF ARRAY\r\n", rsc_ptr->rsc_uref,
 						rsc_ptr->rsc_name, offset, ret, offset + ret,
 						sizeof(appv_rsc_firmware) - 1);
 				return -1;
