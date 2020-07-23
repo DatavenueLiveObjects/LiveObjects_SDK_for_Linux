@@ -210,7 +210,8 @@ cd build
 cmake -DCMAKE_C_COMPILER=<Path to the compiler> ..
 make
 ```
-
+For example on Ubuntu build command will be <br>
+```cmake -DCMAKE_C_COMPILER=/usr/bin/arm-linux-gnueabihf-gcc ..```
 ### Windows
 
 You can only cross-compile the program on Windows. This is how to do it from cmd.exe:
