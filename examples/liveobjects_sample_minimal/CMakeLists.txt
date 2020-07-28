@@ -15,6 +15,12 @@ include_directories(${LIB_PATH}/mbedtls/include)
 include_directories(${PLATFORM_PATH})
 include_directories(${CMAKE_SOURCE_DIR}/mbedtls_configs)
 
+# WiringPi
+set(WIRINGPI_PATH ${LIB_PATH}/WiringPi/wiringPi)
+file(GLOB WIRINGPI_SOURCE ${WIRINGPI_PATH}/*.c)
+include_directories(${WIRINGPI_PATH})
+add_library(wiringPi SHARED ${WIRINGPI_SOURCE})
+
 # Bring the Config
 include_directories(.)
 
@@ -33,4 +39,6 @@ target_link_libraries(${EXECUTABLE_NAME}
  ${CORE_LIB}
  ${COMMON_LIB_LIST}
  wiringPi
+ -lcrypt
+ -lrt
 )
