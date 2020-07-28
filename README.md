@@ -70,12 +70,11 @@ You can also use SCP to transfer files to your devices ([Windows](http://www.chi
 
 ### LiveObjects API Key
 
-Visit [IoT Soft Box powered by Datavenue](https://liveobjects.orange-business.com/v2/#/sdk)
+Visit [LiveObjects portal](https://liveobjects.orange-business.com/#/liveobjects)
 
 1. You need to request the creation of a developer account.
-1. Then, with your LiveObjects user identifier, login to the [Live Objects portal](https://liveobjects.orange-business.com/#/login).
-1. Go in 'Configuration - API key' tab, and add a new API key.
-**Don't forget to copy this API key value** in a local and secure place during this operation.
+2. Then, with your LiveObjects user identifier, login to the [Live Objects portal](https://liveobjects.orange-business.com/#/login).
+3. Create an [API key](https://liveobjects.orange-business.com/#/administration/apikeys) for your device. Give it a name, select the *Device access* role and validate. Copy the key.
 
 ### Setup the LiveObjects header file
 
@@ -211,7 +210,8 @@ cd build
 cmake -DCMAKE_C_COMPILER=<Path to the compiler> ..
 make
 ```
-
+For example on Ubuntu build command will be <br>
+```cmake -DCMAKE_C_COMPILER=/usr/bin/arm-linux-gnueabihf-gcc ..```
 ### Windows
 
 You can only cross-compile the program on Windows. This is how to do it from cmd.exe:

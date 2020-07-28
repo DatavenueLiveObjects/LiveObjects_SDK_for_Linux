@@ -25,6 +25,10 @@
 /* Raspberry Pi GPIO */
 #include <wiringPi.h>
 
+/* User params/configs */
+#include "config/liveobjects_dev_params.h"
+#include "config/liveobjects_dev_config.h"
+
 /* LiveObjects api */
 #include "liveobjects_iotsoftbox_api.h"
 
