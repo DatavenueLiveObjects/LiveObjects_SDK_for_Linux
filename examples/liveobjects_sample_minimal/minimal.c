@@ -75,6 +75,13 @@ int dht11_data[DATA_SIZE] = {0};
 
 uint8_t appv_log_level = DBG_DFT_MAIN_LOG_LEVEL;
 
+//API key validation
+#if C_LOC_CLIENT_DEV_API_KEY_P1 == 0x0123456789abcdef || C_LOC_CLIENT_DEV_API_KEY_P2 == 0xfedcba9876543210
+# error "API key has default value, which is just an placeholder, please change it to valid api key"
+#elif (!defined(C_LOC_CLIENT_DEV_API_KEY_P1) || !defined(C_LOC_CLIENT_DEV_API_KEY_P2))
+#  error "API key not defined"
+#endif
+
 // ==========================================================
 //
 // Live Objects IoT Client object (using iotsoftbox-mqtt library)
