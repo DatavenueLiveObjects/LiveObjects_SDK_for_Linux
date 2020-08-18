@@ -133,9 +133,14 @@ git submodule init
 git submodule update
 mkdir build; cd build
 cmake ..
+
 ```
-Finally: <br>
-to compile "minimal" example: <br>
+At this point you should setup API keys(check "API key" chapter for details) in each of examples you want to run, they're defined in:<br>
+*examples/liveobjects_sample_basic/basic.c*<br>
+*examples/liveobjects_sample_minimal/minimal.c*<br>
+*examples/liveobjects_sample_minimal/update.c*<br>
+Then to compile "minimal" example: <br>
+
 ```bash
 make minimal
 ```
@@ -152,15 +157,15 @@ After above steps you should get executable files in `build/bin` directory, to r
 ```bash
 cd bin
 ```
-to run "minimal example":
+to run "minimal" example:
 ```bash
 ./minimal
 ```
-to run "basic example":
+to run "basic" example:
 ```bash
 ./basic
 ```
-to run "update example":
+to run "update" example:
 
 ```bash
 ./update
