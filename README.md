@@ -1,3 +1,4 @@
+
 # LiveObject IoT Client - IoTSoftBox-MQTT
 
 
@@ -118,14 +119,16 @@ By disabling the security, MbedTLS code's will still be embedded because it is u
 
 You can avoid compiling mbedTLS by uncommenting `//#define LOC_FEATURE_MBEDTLS 0` in  `liveobjects_dev_config.h` but resource related feature won't be available.
 
-### Quickstart: compilation on RaspberryPi
-Easiest way to start using this SDK with RaspberryPi is to skip cross-compilation and compile this library/examples on RaspberryPi itself. For compilation on RaspberryPi it's adviced to use latest Raspbian distrubution, then after setting internet connection on RaspberryPi, you can use below commands to install required software and compile this library on fresh Raspbian:<br>
+### Compilation on RaspberryPi
+The easiest way to start using this SDK with RaspberryPi is to skip cross-compilation and compile this library/examples on RaspberryPi itself.
+To compile on RaspberryPi, it's advised to use the latest Raspbian distribution, then after setting internet connection on RaspberryPi, you can use below commands to install the required software and compile this library on fresh Raspbian:<br>
 ```bash
 sudo apt-get update
 sudo apt-get install git
 sudo apt-get install cmake
 git clone https://github.com/DatavenueLiveObjects/LiveObjects_SDK_for_Linux
 cd LiveObjects_SDK_for_Linux
+(optional) git checkout develop
 git submodule init
 git submodule update
 mkdir build; cd build
