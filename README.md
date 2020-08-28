@@ -1,3 +1,4 @@
+
 # LiveObject IoT Client - IoTSoftBox-MQTT
 
 
@@ -118,7 +119,59 @@ By disabling the security, MbedTLS code's will still be embedded because it is u
 
 You can avoid compiling mbedTLS by uncommenting `//#define LOC_FEATURE_MBEDTLS 0` in  `liveobjects_dev_config.h` but resource related feature won't be available.
 
-## Configure workstation for cross compilation
+### Compilation on RaspberryPi
+The easiest way to start using this SDK with RaspberryPi is to skip cross-compilation and compile this library/examples on RaspberryPi itself.
+To compile on RaspberryPi, it's advised to use the latest Raspbian distribution, then after setting internet connection on RaspberryPi, you can use below commands to install the required software and compile this library on fresh Raspbian:<br>
+```bash
+sudo apt-get update
+sudo apt-get install git
+sudo apt-get install cmake
+git clone https://github.com/DatavenueLiveObjects/LiveObjects_SDK_for_Linux
+cd LiveObjects_SDK_for_Linux
+(optional) git checkout develop
+git submodule init
+git submodule update
+mkdir build; cd build
+cmake ..
+
+```
+At this point you should setup API keys(check "API key" chapter for details) in each of examples you want to run, they're defined in:<br>
+*examples/liveobjects_sample_basic/basic.c*<br>
+*examples/liveobjects_sample_minimal/minimal.c*<br>
+*examples/liveobjects_sample_minimal/update.c*<br>
+Then to compile "minimal" example: <br>
+
+```bash
+make minimal
+```
+to compile "basic" example: <br>
+```bash
+make basic
+```
+to compile "update" example: <br>
+```bash
+make update
+```
+
+After above steps you should get executable files in `build/bin` directory, to run it:
+```bash
+cd bin
+```
+to run "minimal" example:
+```bash
+./minimal
+```
+to run "basic" example:
+```bash
+./basic
+```
+to run "update" example:
+
+```bash
+./update
+```
+
+## Cross compilation
 
 Example given for a Raspberry PI 3 B (`armeabihf` compiler).
 For a Raspberry PI 1 B replace `armeabihf` by `armeabi` so for the compiler use `arm-linux-gnueabi-gcc` instead of `arm-linux-gnueabihf-gcc`

@@ -13,6 +13,8 @@ find_package(Threads)
 
 # MbedTLS
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -I${CMAKE_SOURCE_DIR}/mbedtls_configs -DMBEDTLS_USER_CONFIG_FILE='<liveobjects_mbedtls_custom_config.h>'")
+set(ENABLE_PROGRAMS OFF CACHE BOOL "" FORCE)
+set(ENABLE_TESTING OFF CACHE BOOL "" FORCE)
 add_subdirectory(lib/mbedtls)
 link_directories(lib/mbedtls/library)
 
@@ -29,5 +31,5 @@ set(COMMON_LIB_LIST ${CMAKE_THREAD_LIBS_INIT} MQTTPacket jsmn mbedtls mbedcrypto
 # The examples
 # Comment an example will disable the build.
 add_subdirectory(examples/liveobjects_sample_basic)
-#add_subdirectory(examples/liveobjects_sample_update)
-#add_subdirectory(examples/liveobjects_sample_minimal)
+add_subdirectory(examples/liveobjects_sample_update)
+add_subdirectory(examples/liveobjects_sample_minimal)

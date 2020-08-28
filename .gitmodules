@@ -10,3 +10,6 @@
 [submodule "mqtt_live_objects/LiveObjects-iotSoftbox-mqtt-core"]
 	path = mqtt_live_objects/LiveObjects-iotSoftbox-mqtt-core
 	url = https://github.com/Orange-OpenSource/LiveObjects-iotSoftbox-mqtt-core.git
+[submodule "lib/WiringPi"]
+	path = lib/WiringPi
+	url = https://github.com/WiringPi/WiringPi
