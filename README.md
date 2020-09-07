@@ -122,10 +122,15 @@ You can avoid compiling mbedTLS by uncommenting `//#define LOC_FEATURE_MBEDTLS 0
 ### Compilation on RaspberryPi
 The easiest way to start using this SDK with RaspberryPi is to skip cross-compilation and compile this library/examples on RaspberryPi itself.
 To compile on RaspberryPi, it's advised to use the latest Raspbian distribution, then after setting internet connection on RaspberryPi, you can use below commands to install the required software and compile this library on fresh Raspbian:<br>
+
+install required packages:
 ```bash
 sudo apt-get update
 sudo apt-get install git
 sudo apt-get install cmake
+```
+Prepare build environment:
+```bash
 git clone https://github.com/DatavenueLiveObjects/LiveObjects_SDK_for_Linux
 cd LiveObjects_SDK_for_Linux
 (optional) git checkout develop
@@ -135,11 +140,14 @@ mkdir build; cd build
 cmake ..
 
 ```
-At this point you should setup API keys(check "API key" chapter for details) in each of examples you want to run, they're defined in:<br>
+<b>Make sure that you set API keys for each of example in each of examples you want to run.... they're defined in:</b><br>
 *examples/liveobjects_sample_basic/basic.c*<br>
 *examples/liveobjects_sample_minimal/minimal.c*<br>
 *examples/liveobjects_sample_minimal/update.c*<br>
-Then to compile "minimal" example: <br>
+
+
+to compile "minimal" example: <br>
+`*commands need to be run in "build" directory created in previous steps`:<br>
 
 ```bash
 make minimal
