@@ -24,12 +24,12 @@ file(GLOB_RECURSE ALL_SOURCE ${SOURCE_PATH}/*.c)
 # Generate the library from the sources
 add_library(${CORE_LIB} ${ALL_SOURCE})
 
+#Link libraries into one shared libraries
+target_link_libraries(${CORE_LIB} ${COMMON_LIB_LIST})
+
 # You can change the name of the c file but don't forget to report the modification here
 # Set the executable name and create it
 add_executable(${EXECUTABLE_NAME} ${EXECUTABLE_NAME}.c)
 
 # Link edition configuration
-target_link_libraries(${EXECUTABLE_NAME}
- ${CORE_LIB}
- ${COMMON_LIB_LIST}
-)
+target_link_libraries(${EXECUTABLE_NAME} ${CORE_LIB})
