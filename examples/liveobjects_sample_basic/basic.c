@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 Orange
+ * Copyright (C) 2020 Orange
  *
  * This software is distributed under the terms and conditions of the
  * 'BSD-3-Clause'
