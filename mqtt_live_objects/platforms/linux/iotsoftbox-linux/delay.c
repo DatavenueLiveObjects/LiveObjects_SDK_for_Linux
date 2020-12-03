@@ -1,11 +1,8 @@
 /*
- * Copyright (C) 2016 Orange
+ * Copyright (C) Orange
  *
- * This software is distributed under the terms and conditions of the
- * 'BSD-3-Clause'
- * license which can be found in the file 'LICENSE.txt' in this package
- * distribution
- * or at 'https://opensource.org/licenses/BSD-3-Clause'.
+ * This software is distributed under the terms and conditions of the 'MIT'
+ * license which can be found in the file 'LICENSE.md' in this package distribution
  */
 
 /**
