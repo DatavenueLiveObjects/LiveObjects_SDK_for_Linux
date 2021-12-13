@@ -18,14 +18,14 @@
 
 #define VERIFY_MODE   0
 
-/*#define SERVER_CERTS          NULL*/
+/*#define SERVER_CERT          NULL*/
 #define CLIENT_CERT           NULL
 #define CLIENT_PKEY           NULL
 #define CLIENT_PKEY_PASSWORD  0
 
 #define SERVER_CERTIFICATE_COMMON_NAME     "mqtt.liveobjects.orange-business.com"
 
-#ifndef SERVER_CERTS
+#ifndef SERVER_CERT
 #define SERVER_CERT  "-----BEGIN CERTIFICATE-----\n" \
     "MIIDjjCCAnagAwIBAgIQAzrx5qcRqaC7KGSxHQn65TANBgkqhkiG9w0BAQsFADBh\n" \
     "MQswCQYDVQQGEwJVUzEVMBMGA1UEChMMRGlnaUNlcnQgSW5jMRkwFwYDVQQLExB3\n" \
