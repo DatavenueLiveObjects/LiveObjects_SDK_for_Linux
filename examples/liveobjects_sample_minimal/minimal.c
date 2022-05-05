@@ -18,6 +18,9 @@
 #include <string.h>
 #include <time.h>
 #include <unistd.h>
+#include <sys/socket.h>
+#include <sys/ioctl.h>
+#include <net/if.h>
 
 /* Raspberry Pi GPIO */
 #include <wiringPi.h>
@@ -30,9 +33,8 @@
 #include "liveobjects_iotsoftbox_api.h"
 
 /* Default LiveObjects device settings : name space and device identifier*/
-#define LOC_CLIENT_DEV_NAME_SPACE            "LiveObjectsDomain"
+#define LOC_CLIENT_DEV_NAME_SPACE            "Linux"
 
-#define LOC_CLIENT_DEV_ID                    "LO_softboxlinux_01"
 
 /** Here, set your LiveObject Apikey. It is mandatory to run the application
  *
@@ -223,8 +225,13 @@ void appli_sched(void) {
 
 bool mqtt_start(void *ctx) {
 
+	void get_mac(char* iface, char* buf);
+	char *iface = "eth0";
+	char mac[12];
+	get_mac(iface, mac);
+
 	LiveObjectsClient_SetDbgLevel(appv_log_level);
-	LiveObjectsClient_SetDevId(LOC_CLIENT_DEV_ID);
+	LiveObjectsClient_SetDevId(mac);
 	LiveObjectsClient_SetNameSpace(LOC_CLIENT_DEV_NAME_SPACE);
 
 	unsigned long long apikey_p1 = C_LOC_CLIENT_DEV_API_KEY_P1;
@@ -270,6 +277,30 @@ bool mqtt_start(void *ctx) {
 
 	printf("mqtt_start: OK\n");
 	return true;
+}
+
+// ----------------------------------------------------------
+
+void get_mac(char* iface, char* buf)
+{
+    int fd;
+    struct ifreq ifr;
+    unsigned char *mac = NULL;
+
+    memset(&ifr, 0, sizeof(ifr));
+
+    fd = socket(AF_INET, SOCK_DGRAM, 0);
+
+    ifr.ifr_addr.sa_family = AF_INET;
+    strncpy(ifr.ifr_name , iface , IFNAMSIZ-1);
+
+    if (0 == ioctl(fd, SIOCGIFHWADDR, &ifr)) {
+        mac = (unsigned char *)ifr.ifr_hwaddr.sa_data;
+        sprintf(buf, "%.2X%.2X%.2X%.2X%.2X%.2X" , mac[0], mac[1], mac[2], mac[3], mac[4], mac[5]);
+    }
+
+    close(fd);
+    return;
 }
 
 // ----------------------------------------------------------
