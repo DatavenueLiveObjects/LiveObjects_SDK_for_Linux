@@ -18,6 +18,9 @@
 #include <string.h>
 #include <time.h>
 #include <unistd.h>
+#include <sys/socket.h>
+#include <sys/ioctl.h>
+#include <net/if.h>
 
 /* Raspberry Pi GPIO */
 #include <wiringPi.h>
@@ -30,9 +33,8 @@
 #include "liveobjects_iotsoftbox_api.h"
 
 /* Default LiveObjects device settings : name space and device identifier*/
-#define LOC_CLIENT_DEV_NAME_SPACE            "LiveObjectsDomain"
-
-#define LOC_CLIENT_DEV_ID                    "LO_softboxlinux_01"
+#define LOC_CLIENT_DEV_NAME_SPACE            "Linux"
+#define IFACE	"eth0"
 
 /** Here, set your LiveObject Apikey. It is mandatory to run the application
  *
@@ -223,8 +225,11 @@ void appli_sched(void) {
 
 bool mqtt_start(void *ctx) {
 
+	char mac[12];
+	get_mac(IFACE, mac);
+
 	LiveObjectsClient_SetDbgLevel(appv_log_level);
-	LiveObjectsClient_SetDevId(LOC_CLIENT_DEV_ID);
+	LiveObjectsClient_SetDevId(mac);
 	LiveObjectsClient_SetNameSpace(LOC_CLIENT_DEV_NAME_SPACE);
 
 	unsigned long long apikey_p1 = C_LOC_CLIENT_DEV_API_KEY_P1;
