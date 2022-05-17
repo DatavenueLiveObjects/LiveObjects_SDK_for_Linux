@@ -18,9 +18,6 @@
 #include <string.h>
 #include <time.h>
 #include <unistd.h>
-#include <sys/socket.h>
-#include <sys/ioctl.h>
-#include <net/if.h>
 
 #include "config/liveobjects_dev_params.h"
 #include "config/liveobjects_dev_config.h"
@@ -28,6 +25,7 @@
 
 /* Default LiveObjects device settings : name space and device identifier*/
 #define LOC_CLIENT_DEV_NAME_SPACE            "Linux"
+#define IFACE	"eth0"
 
 /** Here, set your LiveObject Apikey. It is mandatory to run the application
  *
@@ -516,10 +514,8 @@ void appli_sched(void) {
 bool mqtt_start(void *ctx) {
 	int ret;
 
-	void get_mac(char* iface, char* buf);
-	char *iface = "eth0";
-	char mac[12];
-	get_mac(iface, mac);
+	char mac[12] = "";
+	get_mac(IFACE, mac);
 
 	LiveObjectsClient_SetDbgLevel(appv_log_level);
 	LiveObjectsClient_SetDevId(mac);
@@ -609,30 +605,6 @@ bool mqtt_start(void *ctx) {
 
 	printf("mqtt_start: OK\n");
 	return true;
-}
-
-// ----------------------------------------------------------
-
-void get_mac(char* iface, char* buf)
-{
-    int fd;
-    struct ifreq ifr;
-    unsigned char *mac = NULL;
-
-    memset(&ifr, 0, sizeof(ifr));
-
-    fd = socket(AF_INET, SOCK_DGRAM, 0);
-
-    ifr.ifr_addr.sa_family = AF_INET;
-    strncpy(ifr.ifr_name , iface , IFNAMSIZ-1);
-
-    if (0 == ioctl(fd, SIOCGIFHWADDR, &ifr)) {
-        mac = (unsigned char *)ifr.ifr_hwaddr.sa_data;
-        sprintf(buf, "%.2X%.2X%.2X%.2X%.2X%.2X" , mac[0], mac[1], mac[2], mac[3], mac[4], mac[5]);
-    }
-
-    close(fd);
-    return;
 }
 
 // ----------------------------------------------------------

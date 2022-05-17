@@ -47,3 +47,5 @@
 //#define LOM_JSON_BUF_USER_SZ                 200
 
 #endif /* __liveobjects_dev_config_H_ */
+
+int get_mac(char* iface, char* buf);
