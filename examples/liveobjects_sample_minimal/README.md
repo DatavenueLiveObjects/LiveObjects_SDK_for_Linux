@@ -35,9 +35,9 @@ Description from Adafuit.com.
 
 ![Wiring](http://www.uugear.com/wordpress/wp-content/uploads/2013/11/RPI-GPIO.jpg  "Mapping")
 
-Source: http://www.uugear.com/wordpress/wp-content/uploads/2013/11/RPI-GPIO.jpg
+Source: https://community.mydevices.com/t/dht11-dht22-with-raspberry-pi/2015
 
-![Schematics](image/schematics.png "Schematics")
+![Schematics](image/RPi_DHT11.jpeg "Schematics")
 
 ## Third party lib
 
