@@ -162,6 +162,7 @@ int read_dht11_data() {
 			}
 		}
 		laststate = digitalRead(DHTPIN);
+		delayMicroseconds(10);	/* delay helps to receive good values of temperature and humidity */
 
 		if (counter == DATA_WAIT_TIMEOUT) {
 			break;
