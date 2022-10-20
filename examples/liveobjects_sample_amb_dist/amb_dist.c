@@ -93,6 +93,9 @@ int32_t appv_status_counter = 0;
 // Message to display as a status in LO
 char appv_status_message[150] = "READY";
 
+// VL6180 sensor handle
+vl6180 handle;
+
 /// Set of status
 LiveObjectsD_Data_t appv_set_status[] = {
 		{ LOD_TYPE_STRING_C, "sample_version", APPV_VERSION, 1 },
@@ -127,16 +130,18 @@ int appv_hdl_data = -1;
 
 // ----------------------------------------------------------
 
-int read_vl6180x_data() {
+int read_vl6180x_data(vl6180 handle) {
 	int ret = 0;
-	vl6180 handle = vl6180_initialise(1);
-	if (1) {
-		appv_measures_distance = get_distance(handle);
-		sprintf(appv_measures_amb_light, "%.2f", get_ambient_light(handle, GAIN_1));
-		printf("\nData are Ok, updating values\n");
+
+	appv_measures_distance = get_distance(handle);
+	float ambient_light = get_ambient_light(handle, GAIN_1);
+
+	if ((appv_measures_distance >= 0) & (ambient_light >= 0.0)) {
+		sprintf(appv_measures_amb_light, "%.2f", ambient_light);	// send as string w/ 2 dec. places
+		printf("\nData are Ok, updating values\n\n");
 		ret = 1;
 	} else {
-		printf("\nData aren't good, keeping the previous values\n");
+		printf("\nData aren't good, keeping the previous values\n\n");
 		ret = 0;
 	}
 	return ret;
@@ -154,8 +159,8 @@ void appli_sched(void) {
 	}
 
 	/* Read data from the VL6180X */
-	/* if data are ok, copy them ,then push */
-	if (read_vl6180x_data()) {
+	/* if data are ok, copy them, then push */
+	if (read_vl6180x_data(handle)) {
 		if (appv_log_level > 2) {
 			printf("thread_appli: %u - %s PUBLISH - distance=%d mm, ambient light=%s lx\r\n", loop_cnt,
 					appv_measures_enabled ? "DATA" : "NO", appv_measures_distance, appv_measures_amb_light);
@@ -236,6 +241,10 @@ int main() {
 	if (wiringPiSetup() == -1) {
 		printf("Failed to setup wiringPi, exiting now !");
 		ret = -1;
+	}
+
+	if ((handle = vl6180_initialise(1)) < 0) {
+		ret -2;
 	}
 
 	if (ret == 0 && mqtt_start(NULL)) {
