@@ -244,7 +244,8 @@ int main() {
 	}
 
 	if ((handle = vl6180_initialise(1)) < 0) {
-		ret -2;
+		printf("Failed to setup VL6180X, exiting now !");
+		ret = -2;
 	}
 
 	if (ret == 0 && mqtt_start(NULL)) {
