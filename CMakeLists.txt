@@ -33,3 +33,4 @@ set(COMMON_LIB_LIST ${CMAKE_THREAD_LIBS_INIT} MQTTPacket jsmn mbedtls mbedcrypto
 add_subdirectory(examples/liveobjects_sample_basic)
 add_subdirectory(examples/liveobjects_sample_update)
 add_subdirectory(examples/liveobjects_sample_minimal)
+add_subdirectory(examples/liveobjects_sample_amb_dist)

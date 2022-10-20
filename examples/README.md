@@ -12,6 +12,8 @@ For now, there are three examples:
 
 * **[Update](liveobjects_sample_update/README.md)**: example using the minimal amount of code to update the firmware with a deb package.
 
+* **[Ambient light and distance](liveobjects_sample_amb_dist/README.md)**: example using the minimal amount of code to get data from ambient light sensor and distance sensor.
+
 ## Adding an example
 
 The best way to add an example is to copy another one and change the following things :
