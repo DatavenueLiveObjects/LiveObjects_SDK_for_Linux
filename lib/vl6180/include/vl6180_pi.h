@@ -1,3 +1,19 @@
+/*
+ * Copyright (C) Orange
+ *
+ * This software is distributed under the terms and conditions of the 'MIT'
+ * license which can be found in the file 'LICENSE.md' in this package distribution
+ *
+ *  This file incorporates work covered by the following copyright and  
+ *  permission notice: 
+ * 
+ *  Copyright (c) 2020, leachj
+ *  https://github.com/leachj/vl6180_pi/blob/master/LICENSE
+ * 
+ *  Copyright (c) 2021, Toni Klopfenstein
+ *  https://github.com/sparkfun/SparkFun_ToF_Range_Finder-VL6180_Arduino_Library/blob/master/LICENSE.md
+ */
+
 #ifdef __cplusplus
 extern "C"{
 #endif 

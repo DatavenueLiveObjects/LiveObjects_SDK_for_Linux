@@ -1,3 +1,19 @@
+/*
+ * Copyright (C) Orange
+ *
+ * This software is distributed under the terms and conditions of the 'MIT'
+ * license which can be found in the file 'LICENSE.md' in this package distribution
+ *
+ *  This file incorporates work covered by the following copyright and  
+ *  permission notice: 
+ * 
+ *  Copyright (c) 2020, leachj
+ *  https://github.com/leachj/vl6180_pi/blob/master/LICENSE
+ * 
+ *  Copyright (c) 2021, Toni Klopfenstein
+ *  https://github.com/sparkfun/SparkFun_ToF_Range_Finder-VL6180_Arduino_Library/blob/master/LICENSE.md
+ */
+
 #include "vl6180_pi.h"
 #include <linux/i2c-dev.h>
 #include <sys/ioctl.h>
@@ -175,7 +191,6 @@ int get_distance(vl6180 handle){
 }
 
 float get_ambient_light(vl6180 handle, vl6180x_als_gain_t vl6180x_als_gain) {
-    // Ported from C++: https://github.com/sparkfun/SparkFun_ToF_Range_Finder-VL6180_Arduino_Library
     // First load in Gain we are using, do it everytime incase someone changes it on us.
     // Note: Upper nibble should be set to 0x4 i.e. for ALS gain of 1.0 write 0x46
     write_byte(handle, VL6180X_SYSALS_ANALOGUE_GAIN, (0x40 | vl6180x_als_gain));    // Set the ALS gain
