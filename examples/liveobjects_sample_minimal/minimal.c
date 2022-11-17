@@ -32,7 +32,7 @@
 /* LiveObjects api */
 #include "liveobjects_iotsoftbox_api.h"
 
-/* Default LiveObjects device settings : name space and device identifier*/
+/* Default LiveObjects device settings : name space and network interface identifier */
 #define LOC_CLIENT_DEV_NAME_SPACE            "Linux"
 #define IFACE	"eth0"
 

@@ -35,7 +35,7 @@
 /* LiveObjects api */
 #include "liveobjects_iotsoftbox_api.h"
 
-/* Default LiveObjects device settings : name space and device identifier*/
+/* Default LiveObjects device settings : name space and network interface identifier */
 #define LOC_CLIENT_DEV_NAME_SPACE            "Linux"
 #define IFACE	"eth0"
 
@@ -52,8 +52,8 @@
  *
  * */
 
-#define C_LOC_CLIENT_DEV_API_KEY_P1			0x0123456789abcdef
-#define C_LOC_CLIENT_DEV_API_KEY_P2			0xfedcba9876543210
+#define C_LOC_CLIENT_DEV_API_KEY_P1			0xe89fd596bb7244c1
+#define C_LOC_CLIENT_DEV_API_KEY_P2			0x9872f9b0c5555ed9
 
 /* Debug */
 #define DBG_DFT_MAIN_LOG_LEVEL 3
