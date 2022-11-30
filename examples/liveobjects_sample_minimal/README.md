@@ -18,55 +18,28 @@ The compilation process is no different from the other one because everything is
 
 ## Enable the example
 
-**If you didn't installed the [library](#installation), it will fail at compilation time**
-
 Go inside the top level cmake and uncomment the following line :
 
 ```cmake
 #add_subdirectory(liveobjects_sample_minimal)
 ```
+Enable (if needed) **1-Wire** interface on your Raspberry Pi using terminal and command:
+```bash
+sudo raspi-config
+```
+and selecting: **3 Interface Options** -> **P7 1_Wire** -> **\<Yes\>**
+
+![I2C_Enabling](image/enable_1-Wire.png)
 
 ## Sensor
 
-The [DHT11](https://www.adafruit.com/product/386) is a basic, ultra low-cost digital temperature and humidity sensor. It uses a capacitive humidity sensor and a thermistor to measure the surrounding air, and spits out a digital signal on the data pin (no analog input pins needed). Its fairly simple to use, but requires careful timing to grab data.
+The [DHT11](https://www.adafruit.com/product/386) is a basic, ultra low-cost digital temperature and humidity sensor. It uses a capacitive humidity sensor and a thermistor to measure the surrounding air, and spits out a digital signal on the data pin (no analog input pins needed). Its fairly simple to use, but requires careful timing to grab data.<br>
 Description from Adafuit.com.
 
 ### Wiring
 
-![Wiring](http://www.uugear.com/wordpress/wp-content/uploads/2013/11/RPI-GPIO.jpg  "Mapping")
+![Wiring](https://www.raspberrypi-spy.co.uk/wp-content/uploads/2012/06/Raspberry-Pi-GPIO-Header-with-Photo-768x512.png "Mapping")
 
 Source: https://community.mydevices.com/t/dht11-dht22-with-raspberry-pi/2015
 
 ![Schematics](image/RPi_DHT11.jpeg "Schematics")
-
-## Third party lib
-
-[WiringPi](http://wiringpi.com/) is a GPIO access library written in C for the BCM2835 used in the Raspberry Pi. It’s released under the GNU LGPLv3 license and is usable from C and C++ and many other languages with suitable wrappers (See below) It’s designed to be familiar to people who have used the Arduino “wiring” system.
-
-### Installation
-
-You must install WiringPi on your Pi and then resynchronise the Sysroot on Windows.
-
-```bash
-git clone https://github.com/WiringPi/WiringPi.git
-cd WiringPi
-./build
-```
-
-Or on Linux run the script wiringPiInstaller.sh
-It will install everything you need to compile the example with the ARM compiler.
-You may have to tune it to change the compiler or the target.
-
-### Usage
-
-A basic example is available [here](https://github.com/WiringPi/WiringPi/blob/master/examples/blink.c).
-
-Don't forget to link the library :
-
-```cmake
-target_link_libraries(${EXECUTABLE_NAME}
- wiringPi
- ...)
-```
-
-**All programs using Wiring Pi must be run with sudo**

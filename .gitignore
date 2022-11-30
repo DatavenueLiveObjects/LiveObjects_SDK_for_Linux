@@ -45,6 +45,9 @@ apidoc/*
 *.idb
 *.pdb
 
+# Backup files
+*.bak
+
 # Kernel Module Compile Results
 *.mod*
 *.cmd

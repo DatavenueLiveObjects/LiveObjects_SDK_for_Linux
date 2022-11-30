@@ -43,6 +43,7 @@ Here is a table of content for this file:
 		- [jsmn](#jsmn)
 		- [mbedTLS](#mbedtls)
 		- [paho mqtt](#paho-mqtt)
+		- [WiringPi](#WiringPi)
 	- [Mqtt_live_objects](#mqtt_live_objects)
 		- [LiveObjects-iotSoftbox-mqtt-core](#liveobjects-iotsoftbox-mqtt-core)
 		- [Platforms](#platforms)
@@ -90,9 +91,9 @@ The first part is the first sixteen char of the ApiKey and the second one is the
  An example is given below:
 
 ```c
-/* Default LiveObjects device settings : name space and device identifier*/
-#define LOC_CLIENT_DEV_NAME_SPACE            "LiveObjectsDomain"
-#define LOC_CLIENT_DEV_ID                    "LO_softboxlinux_01"
+/* Default LiveObjects device settings : name space and network interface identifier */
+#define LOC_CLIENT_DEV_NAME_SPACE            "Linux"
+#define IFACE	"eth0"
 
 /** Here, set your LiveObject Apikey. It is mandatory to run the application
  *
@@ -138,12 +139,13 @@ git submodule init
 git submodule update
 mkdir build; cd build
 cmake ..
-
 ```
+
 <b>Make sure that you set API keys for each of example in each of examples you want to run.... they're defined in:</b><br>
 *examples/liveobjects_sample_basic/basic.c*<br>
 *examples/liveobjects_sample_minimal/minimal.c*<br>
-*examples/liveobjects_sample_minimal/update.c*<br>
+*examples/liveobjects_sample_update/update.c*<br>
+*examples/liveobjects_sample_amb_dist/amb_dist.c*<br>
 
 
 to compile "minimal" example: <br>
@@ -159,6 +161,10 @@ make basic
 to compile "update" example: <br>
 ```bash
 make update
+```
+to compile "amb_dist" example: <br>
+```bash
+make amb_dist
 ```
 
 After above steps you should get executable files in `build/bin` directory, to run it:
@@ -177,6 +183,11 @@ to run "update" example:
 
 ```bash
 ./update
+```
+to run "amb_dist" example:
+
+```bash
+./amb_dist
 ```
 
 ## Cross compilation
@@ -359,6 +370,10 @@ There is a list of the third-party libraries used in this library and their util
 #### paho mqtt
 
 [paho mqtt](https://github.com/eclipse/paho.mqtt.embedded-c) is part of the Eclipse Paho project, which provides open-source client implementations of MQTT and MQTT-SN messaging protocols aimed at new, existing, and emerging applications for the Internet of Things.
+
+#### WiringPi
+
+[WiringPi](https://github.com/WiringPi/WiringPi) is Gordon's Arduino wiring-like WiringPi Library for the Raspberry Pi (Unofficial Mirror for WiringPi bindings).
 
 ### Mqtt_live_objects
 

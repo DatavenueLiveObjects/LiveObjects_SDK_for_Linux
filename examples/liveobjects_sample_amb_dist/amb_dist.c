@@ -6,8 +6,8 @@
  */
 
 /**
- * @file  minimal.c
- * @brief A minimal user application using basic LiveObjects
+ * @file  amb_dist.c
+ * @brief An ambient light & distance user application using basic LiveObjects
  * iotsotbox-mqtt features
  */
 
@@ -24,6 +24,9 @@
 
 /* Raspberry Pi GPIO */
 #include <wiringPi.h>
+#include <wiringPiI2C.h>
+/* VL6180X */
+#include <vl6180_pi.h>
 
 /* User params/configs */
 #include "config/liveobjects_dev_params.h"
@@ -49,8 +52,8 @@
  *
  * */
 
-#define C_LOC_CLIENT_DEV_API_KEY_P1			0x0123456789abcdef
-#define C_LOC_CLIENT_DEV_API_KEY_P2			0xfedcba9876543210
+#define C_LOC_CLIENT_DEV_API_KEY_P1			0xe89fd596bb7244c1
+#define C_LOC_CLIENT_DEV_API_KEY_P2			0x9872f9b0c5555ed9
 
 /* Debug */
 #define DBG_DFT_MAIN_LOG_LEVEL 3
@@ -60,17 +63,8 @@
 #define DBG_DFT_MSG_DUMP         0xf
 
 /* Various tag */
-#define APPV_VERSION "LINUX MINIMAL SAMPLE V01.1"
-#define LOM_BUILD_TAG "BUILD LiveObjects IoT Minimal 1.1"
-
-/* WiringPi */
-#define MAXTIMINGS	85
-#define DHTPIN		7
-#define DATA_SIZE	5
-#define DATA_WAIT_TIMEOUT 		255
-#define START_SIGNAL_TIMEOUT 	18
-#define RESPONSE_SIGNAL_TIMEOUT 40
-int dht11_data[DATA_SIZE] = {0};
+#define APPV_VERSION "LINUX AMBIENT LIGHT & DISTANCE SAMPLE V01.1"
+#define LOM_BUILD_TAG "BUILD LiveObjects IoT Ambient Light & Distance 1.1"
 
 uint8_t appv_log_level = DBG_DFT_MAIN_LOG_LEVEL;
 
@@ -99,6 +93,9 @@ int32_t appv_status_counter = 0;
 // Message to display as a status in LO
 char appv_status_message[150] = "READY";
 
+// VL6180 sensor handle
+vl6180 handle;
+
 /// Set of status
 LiveObjectsD_Data_t appv_set_status[] = {
 		{ LOD_TYPE_STRING_C, "sample_version", APPV_VERSION, 1 },
@@ -118,14 +115,14 @@ int appv_hdl_status = -1;
 uint8_t appv_measures_enabled = 1;
 // Data
 uint32_t appv_measures_counter = 0;
-float appv_measures_temp = -50.0;
-uint32_t appv_measures_hum = -1;
+char appv_measures_amb_light[16] = "0.0";
+uint32_t appv_measures_distance = -1;
 
 /// Set of Collected data (published on a data stream)
 LiveObjectsD_Data_t appv_set_measures[] = {
 		{ LOD_TYPE_UINT32, "counter", &appv_measures_counter, 1 },
-		{ LOD_TYPE_FLOAT, "temperature", &appv_measures_temp, 1 },
-		{ LOD_TYPE_UINT32, "humidity", &appv_measures_hum, 1 }
+		{ LOD_TYPE_STRING_C, "ambient_light", appv_measures_amb_light, 1 },
+		{ LOD_TYPE_UINT32, "distance", &appv_measures_distance, 1 }
 };
 #define SET_MEASURES_NB (sizeof(appv_set_measures) / sizeof(LiveObjectsD_Data_t))
 
@@ -133,65 +130,18 @@ int appv_hdl_data = -1;
 
 // ----------------------------------------------------------
 
-int read_dht11_data() {
+int read_vl6180x_data(vl6180 handle) {
 	int ret = 0;
-	uint8_t laststate = HIGH;
-	uint8_t counter = 0;
-	uint8_t j = 0, i;
 
-	memset(dht11_data, 0, sizeof(dht11_data));
+	appv_measures_distance = get_distance(handle);
+	float ambient_light = get_ambient_light(handle, GAIN_1);
 
-	/* pull pin down and wait the start signal */
-	pinMode(DHTPIN, OUTPUT);
-	digitalWrite(DHTPIN, LOW);
-	delay(START_SIGNAL_TIMEOUT);
-	/* then pull it up and wait the response */
-	digitalWrite(DHTPIN, HIGH);
-	delayMicroseconds(RESPONSE_SIGNAL_TIMEOUT);
-	/* prepare to read the pin */
-	pinMode(DHTPIN, INPUT);
-
-	/* detect change and read data */
-	for (i = 0; i < MAXTIMINGS; i++) {
-		counter = 0;
-		while (digitalRead(DHTPIN) == laststate) {
-			counter++;
-			delayMicroseconds(1);
-			if (counter == DATA_WAIT_TIMEOUT) {
-				break;
-			}
-		}
-		laststate = digitalRead(DHTPIN);
-		delayMicroseconds(10);	/* delay helps to receive good values of temperature and humidity */
-
-		if (counter == DATA_WAIT_TIMEOUT) {
-			break;
-		}
-
-		/* ignore first 3 transitions */
-		if ((i >= 4) && (i % 2 == 0)) {
-			/* shove each bit into the storage bytes */
-			dht11_data[j / 8] <<= 1;
-			if (counter > 16) {
-				dht11_data[j / 8] |= 1;
-			}
-			j++;
-		}
-	}
-
-	/*
-	 * check we read 40 bits (8bit x 5 ) + verify checksum in the last byte
-	 * copy it out if data is good
-	 */
-	 if ((j >= 40) && (dht11_data[4] == ((dht11_data[0] + dht11_data[1] + dht11_data[2] + dht11_data[3]) & 0xFF))) {
-		char temp_as_str[DATA_SIZE];
-		sprintf(temp_as_str, "%d.%d", dht11_data[2], dht11_data[3]);
-		sscanf(temp_as_str, "%f", &appv_measures_temp);
-		appv_measures_hum = dht11_data[0];
-		printf("Data are Ok, updating values \n");
+	if ((appv_measures_distance >= 0) & (ambient_light >= 0.0)) {
+		sprintf(appv_measures_amb_light, "%.2f", ambient_light);	// send as string w/ 2 dec. places
+		printf("\nData are Ok, updating values\n\n");
 		ret = 1;
 	} else {
-		printf("Data aren't good, keeping the previous values \n");
+		printf("\nData aren't good, keeping the previous values\n\n");
 		ret = 0;
 	}
 	return ret;
@@ -208,12 +158,12 @@ void appli_sched(void) {
 		printf("thread_appli: %u\r\n", loop_cnt);
 	}
 
-	/* Read data from the DHT11 */
-	/* if data are ok, copy them ,then push */
-	if (read_dht11_data()) {
+	/* Read data from the VL6180X */
+	/* if data are ok, copy them, then push */
+	if (read_vl6180x_data(handle)) {
 		if (appv_log_level > 2) {
-			printf("thread_appli: %u - %s PUBLISH - humidity=%d %% temp=%f *C\r\n", loop_cnt,
-					appv_measures_enabled ? "DATA" : "NO", appv_measures_hum, appv_measures_temp);
+			printf("thread_appli: %u - %s PUBLISH - distance=%d mm, ambient light=%s lx\r\n", loop_cnt,
+					appv_measures_enabled ? "DATA" : "NO", appv_measures_distance, appv_measures_amb_light);
 		}
 		if (appv_measures_enabled) {
 			printf("LiveObjectsClient_PushData...\n");
@@ -291,6 +241,11 @@ int main() {
 	if (wiringPiSetup() == -1) {
 		printf("Failed to setup wiringPi, exiting now !");
 		ret = -1;
+	}
+
+	if ((handle = vl6180_initialise(1)) < 0) {
+		printf("Failed to setup VL6180X, exiting now !");
+		ret = -2;
 	}
 
 	if (ret == 0 && mqtt_start(NULL)) {
